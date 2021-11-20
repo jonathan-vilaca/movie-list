@@ -14,14 +14,13 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   TextEditingController _searchController = TextEditingController();
-  HomeController _homeController;
+  final _homeController = Modular.get<HomeController>();
   List<dynamic> _movieList = [];
   int indexList = 0;
   String _msgCenter = 'Search for your favorite movie or serie';
 
   @override
   void initState() {
-    _homeController = Modular.get<HomeController>();
     super.initState();
   }
 
@@ -44,28 +43,44 @@ class _HomePageState extends State<HomePage> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
-        title: TextFormField(
-          keyboardType: TextInputType.name,
-          controller: _searchController,
-          onFieldSubmitted: (value) async {
-            await listMovies(value);
-          },
-          decoration: InputDecoration(
-            fillColor: Colors.white,
-            hoverColor: Colors.white,
-            focusColor: Colors.white,
-            hintText: 'Search...',
-            hintStyle: TextStyle(color: Colors.white),
-            suffixIcon: GestureDetector(
-              onTap: () async {
-                 await listMovies(_searchController.text);
-              },
-              child: Icon(Icons.search, color: Colors.white,)
+        title: Row(
+          children: [
+            Flexible(
+              flex: 10,
+              child: TextFormField(
+                keyboardType: TextInputType.name,
+                controller: _searchController,
+                onFieldSubmitted: (value) async {
+                  await listMovies(value);
+                },
+                decoration: InputDecoration(
+                  fillColor: Colors.white,
+                  hoverColor: Colors.white,
+                  focusColor: Colors.white,
+                  hintText: 'Search...',
+                  hintStyle: TextStyle(color: Colors.white),
+                )
+              ),
+            ),
+            Flexible(
+              flex: 1,
+              child: IconButton(
+                icon: Icon(Icons.search), 
+                onPressed: () async {
+                  await listMovies(_searchController.text);
+                }
+              )
             )
-          )
+          ],
         )
       ),
       body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/fita.jpg'),
+            fit: BoxFit.fitHeight,           
+          )
+        ),
         child: _movieList == null || _movieList.isEmpty ? Center(
           child: Text(_msgCenter, style: TextStyle(color: Colors.black),),
         ) : SingleChildScrollView(
@@ -132,7 +147,8 @@ class _HomePageState extends State<HomePage> {
                                 Padding(padding: EdgeInsets.symmetric(vertical: size.height*.08)),
                                 ButtonDefault(
                                   hintText: 'More details',
-                                  fontSize: 0.02,
+                                  fontSize: 0.018,
+                                  heightSize: 0.05,
                                   fontWeight: FontWeight.bold,
                                   colorBorder: Colors.blue,
                                   colorButton: Colors.blue[100],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -21,6 +22,7 @@ class AppWidget extends StatelessWidget {
       navigatorKey: Modular.navigatorKey,
       onGenerateRoute: Modular.generateRoute,
       localizationsDelegates: [GlobalMaterialLocalizations.delegate],
+      builder: EasyLoading.init(),
       supportedLocales: [
         const Locale('pt')
       ],

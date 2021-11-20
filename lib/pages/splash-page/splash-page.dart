@@ -14,11 +14,11 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
-    changePage();
+    nextPage();
     super.initState();
   }
 
-  changePage() async {
+  nextPage() async {
     // String user = await LocalStorage.getObj('user');
     Future.delayed(Duration(seconds: 4), () {
       // if(user != null) {

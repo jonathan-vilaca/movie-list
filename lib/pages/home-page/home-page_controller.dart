@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:movies_app/shared/services/dio_service.dart';
 import 'package:movies_app/utils/constants.dart';
+import 'package:movies_app/utils/loading.dart';
 import 'package:movies_app/utils/validatos.dart';
 
 class HomeController {
@@ -10,17 +11,24 @@ class HomeController {
   final _http = CustomHttp();
 
   getMovies(String search) async {
-    String searchMovies = Validators.validateSearch(search);
-    List listSearch = [];
+    LoadingScreen.loading();
+    try{
+      String searchMovies = Validators.validateSearch(search);
+      List listSearch = [];
 
-    Response response = await _http.client.get(
-      '?s=$searchMovies&Type=movie&apikey=$omdbKey'
-    );
+      Response response = await _http.client.get(
+        '?s=$searchMovies&Type=movie&apikey=$omdbKey'
+      );
 
-    Map<String, dynamic> result = await jsonDecode(response.toString());
-    listSearch = result['Search'];
+      Map<String, dynamic> result = await jsonDecode(response.toString());
+      listSearch = result['Search'];
+      LoadingScreen.loadingClose();
 
-    return listSearch;
+      return listSearch;
+    }catch (e) {
+      LoadingScreen.loadingClose();
+      print(e);
+    }
   }
 
 }
